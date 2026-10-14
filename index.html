@@ -1,0 +1,512 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的小星球 ✦</title>
+  <style>
+    :root {
+      --pink: #ff8eb4;
+      --purple: #a18bfa;
+      --ink: #493e60;
+      --paper: #fff9fd;
+      --card: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 10%, #ffe0ed, transparent 35%),
+        radial-gradient(circle at 90% 30%, #e6ddff, transparent 32%),
+        var(--paper);
+    }
+
+    button, a { font: inherit; }
+
+    button {
+      cursor: pointer;
+      border: 0;
+    }
+
+    .wrap {
+      width: min(960px, 92%);
+      margin: auto;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 22px 0;
+    }
+
+    .logo { font-weight: 900; font-size: 20px; }
+
+    nav { display: flex; gap: 15px; flex-wrap: wrap; }
+
+    nav a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 58px 12px 46px;
+    }
+
+    .avatar {
+      width: 112px;
+      height: 112px;
+      margin: auto;
+      border-radius: 38% 62% 55% 45%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #ffb5d0, #c4b5fd);
+      font-size: 58px;
+      box-shadow: 0 12px 35px #c5a4dc55;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      50% { transform: translateY(-8px) rotate(3deg); }
+    }
+
+    h1 {
+      font-size: clamp(34px, 7vw, 58px);
+      margin: 25px 0 12px;
+      letter-spacing: -2px;
+    }
+
+    h1 span { color: #ed78a8; }
+
+    .subtitle {
+      max-width: 500px;
+      margin: auto;
+      line-height: 1.9;
+      color: #81758f;
+    }
+
+    .pills {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 20px 0;
+    }
+
+    .pill {
+      background: white;
+      border: 1px solid #f3d9ee;
+      border-radius: 30px;
+      padding: 8px 13px;
+      font-size: 13px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .btn {
+      border-radius: 30px;
+      padding: 12px 19px;
+      background: linear-gradient(120deg, #ff91b9, #b19bff);
+      color: white;
+      box-shadow: 0 6px 18px #d7a3db44;
+    }
+
+    .btn.secondary {
+      background: white;
+      color: var(--ink);
+      border: 1px solid #ebdff4;
+      box-shadow: none;
+    }
+
+    section { padding: 30px 0; }
+
+    .section-title {
+      font-size: 26px;
+      margin-bottom: 8px;
+    }
+
+    .hint {
+      color: #91839f;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #ffffffd9;
+      border: 1px solid #f1e3f3;
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 8px 28px #7d5a9910;
+    }
+
+    .travel-art {
+      height: 125px;
+      display: grid;
+      place-items: center;
+      font-size: 48px;
+      border-radius: 16px;
+      background: linear-gradient(140deg, #ffe1ec, #e4ddff);
+      margin-bottom: 14px;
+    }
+
+    .card h3 { margin: 8px 0; }
+
+    .card p {
+      font-size: 14px;
+      color: #82758e;
+      line-height: 1.7;
+    }
+
+    .memory {
+      border-left: 3px solid #f3a2c4;
+      padding-left: 15px;
+      margin-top: 20px;
+      line-height: 1.9;
+    }
+
+    .chat {
+      margin-top: 18px;
+      background: white;
+      border: 1px solid #eee0f4;
+      padding: 18px;
+      border-radius: 22px;
+    }
+
+    #messages {
+      height: 210px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 4px;
+    }
+
+    .bubble {
+      padding: 10px 13px;
+      border-radius: 15px;
+      max-width: 85%;
+      font-size: 14px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .bot { background: #f2edff; align-self: flex-start; }
+    .me { background: #ffe6f0; align-self: flex-end; }
+
+    .chat-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chat-form input {
+      min-width: 0;
+      flex: 1;
+      border: 1px solid #e7d9ee;
+      border-radius: 24px;
+      padding: 12px 15px;
+      outline-color: #c1a8ff;
+    }
+
+    .note {
+      background: #fff3d8;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.8;
+      color: #7e633c;
+      margin-top: 12px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 45px 10px;
+      color: #95849f;
+      font-size: 13px;
+    }
+
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10;
+      animation: pop 850ms ease-out forwards;
+    }
+
+    @keyframes pop {
+      to {
+        transform: translateY(-75px) rotate(30deg) scale(.3);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 650px) {
+      header { align-items: flex-start; flex-direction: column; }
+      .grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 40px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">✦ My Little Universe</div>
+      <nav>
+        <a href="#about">关于我</a>
+        <a href="#travel">旅行足迹</a>
+        <a href="#chat">AI 小角落</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="about">
+        <div class="avatar" title="点我试试！" onclick="sprinkle(event)">
+          🐰
+        </div>
+
+        <h1>Welcome to <span>my planet.</span></h1>
+        <p class="subtitle">
+          嗨，陌生人！欢迎来到我的小小宇宙。<br>
+          一个正在探索世界、学习新技能的普通人。<br>
+          Life is short. Stay curious. ✨
+        </p>
+
+        <div class="pills">
+          <span class="pill">🌷 Daydreamer</span>
+          <span class="pill">✈️ Travel lover</span>
+          <span class="pill">💻 Newbie coder</span>
+        </div>
+
+        <div class="actions">
+          <button class="btn" onclick="sprinkle(event)">
+            给我一点好运 ✨
+          </button>
+          <button class="btn secondary" id="musicBtn" onclick="toggleMusic()">
+            ♫ 播放小彩蛋
+          </button>
+        </div>
+
+        <p class="hint" id="wish" aria-live="polite">
+          今日份宇宙能量：等待你来解锁。
+        </p>
+      </section>
+
+      <section id="travel">
+        <h2 class="section-title">✈️ 我的旅行星球</h2>
+        <p class="hint">世界那么大，想把走过的路都变成星星。</p>
+
+        <div class="grid">
+          <article class="card">
+            <div class="travel-art">🗼</div>
+            <h3>Tokyo · 日本</h3>
+            <p>霓虹灯、便利店和深夜的城市。这里可以放你的旅行照片与故事。</p>
+            <span class="pill">城市漫游</span>
+          </article>
+
+          <article class="card">
+            <div class="travel-art">🌴</div>
+            <h3>Island · 海岛</h3>
+            <p>阳光、海风与陌生的街道。记录那些一个人出发的勇气。</p>
+            <span class="pill">自由探索</span>
+          </article>
+
+          <article class="card">
+            <div class="travel-art">🌌</div>
+            <h3>Next Stop · 下一站</h3>
+            <p>还有好多地方想去。下一颗旅行星星，由未来的你来点亮。</p>
+            <span class="pill">To be continued</span>
+          </article>
+        </div>
+
+        <div class="memory">
+          <strong>📍 我的旅行宣言</strong><br>
+          不必一次走遍世界，只要一直保有出发的勇气。
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">💌 留给未来的自己</h2>
+        <div class="card">
+          <p>
+            愿我一直有好奇心，有重新开始的勇气，
+            有爱自己的能力，也有去远方看看的自由。
+          </p>
+          <p class="hint">这是你的小空间。以后可以慢慢换成自己的故事。</p>
+        </div>
+      </section>
+
+      <section id="chat">
+        <h2 class="section-title">🤖 AI 小角落</h2>
+        <p class="hint">先体验一个本地演示版，之后再升级成真正的 AI。</p>
+
+        <div class="chat">
+          <div id="messages" aria-live="polite">
+            <div class="bubble bot">
+              嗨！我是小星球助手 ✨ 你可以试着问我：你好！
+            </div>
+          </div>
+
+          <form class="chat-form" id="chatForm">
+            <input id="question" placeholder="对小星球说点什么……"
+                   autocomplete="off" maxlength="300">
+            <button class="btn" type="submit">发送</button>
+          </form>
+
+          <div class="note">
+            提醒：当前是本地演示，不是真正的 AI 模型。
+            你的输入只会触发预设回复，不会连接外部 AI 服务。
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Made with ♡ and a little bit of stardust.<br>
+      © My Little Universe
+    </footer>
+  </div>
+
+  <script>
+    // 彩蛋一：点击按钮，撒下一场星星雨
+    function sprinkle(event) {
+      const emojis = ["✨", "💗", "🌸", "⭐", "🦋"];
+
+      for (let i = 0; i < 12; i++) {
+        const star = document.createElement("span");
+        star.className = "sparkle";
+        star.textContent =
+          emojis[Math.floor(Math.random() * emojis.length)];
+
+        star.style.left = (event.clientX + Math.random() * 80 - 40) + "px";
+        star.style.top = (event.clientY + Math.random() * 40 - 20) + "px";
+        star.style.fontSize = (14 + Math.random() * 18) + "px";
+
+        document.body.appendChild(star);
+        setTimeout(() => star.remove(), 900);
+      }
+
+      const wishes = [
+        "今天也要闪闪发光！✨",
+        "愿你遇见好事，也拥有说不的勇气。💗",
+        "宇宙正在提醒你：慢慢来也没关系。🌷",
+        "愿你的下一次出发充满惊喜！✈️"
+      ];
+
+      document.getElementById("wish").textContent =
+        wishes[Math.floor(Math.random() * wishes.length)];
+    }
+
+    // 彩蛋二：使用浏览器生成简单的音乐音符
+    let audioContext = null;
+    let musicTimer = null;
+    let noteIndex = 0;
+
+    function toggleMusic() {
+      const button = document.getElementById("musicBtn");
+
+      if (musicTimer) {
+        clearInterval(musicTimer);
+        musicTimer = null;
+        button.textContent = "♫ 播放小彩蛋";
+        return;
+      }
+
+      const AudioEngine = window.AudioContext || window.webkitAudioContext;
+
+      if (!AudioEngine) {
+        document.getElementById("wish").textContent =
+          "你的浏览器暂不支持这个音乐彩蛋。";
+        return;
+      }
+
+      if (!audioContext) audioContext = new AudioEngine();
+
+      audioContext.resume();
+      const notes = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46];
+
+      function playNote() {
+        const oscillator = audioContext.createOscillator();
+        const volume = audioContext.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.value = notes[noteIndex % notes.length];
+        volume.gain.setValueAtTime(0.0001, audioContext.currentTime);
+        volume.gain.exponentialRampToValueAtTime(
+          0.06, audioContext.currentTime + 0.03
+        );
+        volume.gain.exponentialRampToValueAtTime(
+          0.0001, audioContext.currentTime + 0.3
+        );
+
+        oscillator.connect(volume);
+        volume.connect(audioContext.destination);
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.32);
+        noteIndex++;
+      }
+
+      playNote();
+      musicTimer = setInterval(playNote, 380);
+      button.textContent = "♫ 停止音乐";
+    }
+
+    // 彩蛋三：本地模拟聊天，还没有接入 AI API
+    const form = document.getElementById("chatForm");
+    const input = document.getElementById("question");
+    const messages = document.getElementById("messages");
+
+    function addMessage(text, role) {
+      const bubble = document.createElement("div");
+      bubble.className = "bubble " + role;
+      bubble.textContent = text;
+      messages.appendChild(bubble);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const question = input.value.trim();
+      if (!question) return;
+
+      addMessage(question, "me");
+      input.value = "";
+
+      let answer = "收到你的消息啦！等我们接入真正的 AI，我就能认真回答你啦。✨";
+
+      if (question.includes("你好") || question.includes("嗨")) {
+        answer = "你好呀！欢迎来到这个小小星球！🌷";
+      } else if (question.includes("旅行")) {
+        answer = "出发吧！记得记录沿途的小惊喜，也照顾好自己。✈️";
+      } else if (question.includes("开心")) {
+        answer = "希望你今天也能遇见一点点值得开心的事情！💗";
+      } else if (question.includes("名字")) {
+        answer = "我叫小星球助手，是这个网站里的演示机器人！⭐";
+      }
+
+      setTimeout(() => addMessage(answer, "bot"), 350);
+    });
+  </script>
+</body>
+</html>
