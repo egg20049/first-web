@@ -827,10 +827,14 @@ function openAlbum(albumId) {
   const album = travelAlbums[albumId];
 
   if (!album) {
-    alert("暂时找不到这个相册，请检查相册编号。");
+    alert(
+      "找不到相册！\n" +
+      "收到的编号：" + albumId + "\n" +
+      "已有编号：" + Object.keys(travelAlbums).join(", ")
+    );
     return;
   }
-
+  
   currentAlbum = album;
   albumTitle.textContent = album.title;
   albumDescription.textContent = album.description;
