@@ -266,7 +266,163 @@
       .grid { grid-template-columns: 1fr; }
       .hero { padding-top: 40px; }
     }
-  </style>
+ 
+/* 相册页面 */
+.album-page {
+  padding: 40px 0;
+  animation: album-appear 0.3s ease;
+}
+
+.album-page[hidden],
+.photo-lightbox[hidden] {
+  display: none !important;
+}
+
+.back-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  background: #f1e7ff;
+  color: #7541a5;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+.album-eyebrow {
+  color: #a17ac7;
+  letter-spacing: 3px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+#album-title {
+  color: #70438e;
+  margin: 8px 0;
+}
+
+.album-description {
+  color: #8d7a98;
+  margin-bottom: 24px;
+}
+
+/* 照片网格 */
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.album-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border-radius: 14px;
+  cursor: zoom-in;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.album-photo:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(100, 60, 130, 0.18);
+}
+
+/* 大图窗口 */
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(25, 18, 35, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+}
+
+.close-lightbox {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  border: 0;
+  background: transparent;
+  color: white;
+  font-size: 38px;
+  cursor: pointer;
+}
+
+.lightbox-figure {
+  margin: 0;
+  max-width: min(80vw, 900px);
+  text-align: center;
+}
+
+#lightbox-image {
+  display: block;
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  margin: auto;
+  border-radius: 10px;
+}
+
+#lightbox-caption {
+  color: white;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.photo-arrow {
+  border: 0;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  background: rgba(255, 255, 255, 0.16);
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+@keyframes album-appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 手机屏幕：每行两张照片 */
+@media (max-width: 600px) {
+  .album-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .photo-lightbox {
+    gap: 6px;
+    padding: 12px;
+  }
+
+  .lightbox-figure {
+    max-width: calc(100vw - 100px);
+  }
+
+  .photo-arrow {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+  }
+}
+
+ #travel[hidden] {
+  display: none !important;
+}
+</style>
 </head>
 
 <body>
@@ -531,6 +687,235 @@
 
       setTimeout(() => addMessage(answer, "bot"), 350);
     });
-  </script>
+ 
+/* 1. 每个相册对应一份照片清单 */
+const travelAlbums = {
+  tokyo: {
+    title: "东京 · Tokyo",
+    description: "记录在东京留下的旅行瞬间。",
+    photos: [
+      {
+        src: "./images/tokyo-1.jpg",
+        caption: "东京旅行 · 01"
+      },
+      {
+        src: "./images/tokyo-2.jpg",
+        caption: "东京旅行 · 02"
+      },
+      {
+        src: "./images/tokyo-3.jpg",
+        caption: "东京旅行 · 03"
+      }
+    ]
+  },
+
+  island: {
+    title: "海岛 · Island",
+    description: "海风、阳光和慢下来的时光。",
+    photos: [
+      {
+        src: "./images/island-1.jpg",
+        caption: "海岛旅行 · 01"
+      },
+      {
+        src: "./images/island-2.jpg",
+        caption: "海岛旅行 · 02"
+      },
+      {
+        src: "./images/island-3.jpg",
+        caption: "海岛旅行 · 03"
+      }
+    ]
+  },
+
+  next: {
+    title: "下一站 · Next Stop",
+    description: "把未来想去的地方也留在这里。",
+    photos: [
+      {
+        src: "./images/next-trip.jpg",
+        caption: "期待下一次出发"
+      }
+    ]
+  }
+};
+
+/* 2. 找到网页上的几个功能区域 */
+const albumPage = document.getElementById("album-page");
+const albumTitle = document.getElementById("album-title");
+const albumDescription = document.getElementById("album-description");
+const albumGrid = document.getElementById("album-grid");
+const backButton = document.getElementById("back-to-albums");
+
+const lightbox = document.getElementById("photo-lightbox");
+const lightboxImage = document.getElementById("lightbox-image");
+const lightboxCaption = document.getElementById("lightbox-caption");
+const closeLightboxButton = document.getElementById("close-lightbox");
+const previousPhotoButton = document.getElementById("previous-photo");
+const nextPhotoButton = document.getElementById("next-photo");
+
+let currentAlbum = null;
+let currentPhotoIndex = 0;
+
+/* 3. 点击旅行卡片，打开对应相册 */
+document.querySelectorAll("#travel [data-album]").forEach((card) => {
+  card.style.cursor = "pointer";
+
+  card.addEventListener("click", () => {
+    const albumId = card.dataset.album;
+    openAlbum(albumId);
+  });
+});
+
+/* 4. 显示相册照片墙 */
+function openAlbum(albumId) {
+  const album = travelAlbums[albumId];
+
+  if (!album) {
+    alert("暂时找不到这个相册，请检查相册编号。");
+    return;
+  }
+
+  currentAlbum = album;
+  albumTitle.textContent = album.title;
+  albumDescription.textContent = album.description;
+  albumGrid.replaceChildren();
+
+  album.photos.forEach((photo, index) => {
+    const image = document.createElement("img");
+
+    image.src = photo.src;
+    image.alt = photo.caption;
+    image.className = "album-photo";
+    image.loading = "lazy";
+
+    image.addEventListener("click", () => {
+      openLightbox(index);
+    });
+
+    albumGrid.appendChild(image);
+  });
+
+  /* 隐藏首页中的旅行区域，显示相册 */
+  document.getElementById("travel").hidden = true;
+  albumPage.hidden = false;
+  albumPage.scrollIntoView({ behavior: "smooth" });
+}
+
+/* 5. 返回旅行卡片列表 */
+backButton.addEventListener("click", () => {
+  closeLightbox();
+  albumPage.hidden = true;
+  document.getElementById("travel").hidden = false;
+  document.getElementById("travel").scrollIntoView({
+    behavior: "smooth"
+  });
+});
+
+/* 6. 打开指定照片的大图 */
+function openLightbox(index) {
+  currentPhotoIndex = index;
+  showCurrentPhoto();
+  lightbox.hidden = false;
+}
+
+/* 更新大图内容 */
+function showCurrentPhoto() {
+  const photo = currentAlbum.photos[currentPhotoIndex];
+
+  lightboxImage.src = photo.src;
+  lightboxImage.alt = photo.caption;
+  lightboxCaption.textContent =
+    photo.caption + " · " +
+    (currentPhotoIndex + 1) + " / " +
+    currentAlbum.photos.length;
+}
+
+/* 7. 关闭大图 */
+function closeLightbox() {
+  lightbox.hidden = true;
+  lightboxImage.removeAttribute("src");
+}
+
+closeLightboxButton.addEventListener("click", closeLightbox);
+
+/* 点击深色背景也可以关闭大图 */
+lightbox.addEventListener("click", (event) => {
+  if (event.target === lightbox) {
+    closeLightbox();
+  }
+});
+
+/* 8. 上一张、下一张 */
+previousPhotoButton.addEventListener("click", () => {
+  if (!currentAlbum) return;
+
+  const total = currentAlbum.photos.length;
+  currentPhotoIndex = (currentPhotoIndex - 1 + total) % total;
+  showCurrentPhoto();
+});
+
+nextPhotoButton.addEventListener("click", () => {
+  if (!currentAlbum) return;
+
+  const total = currentAlbum.photos.length;
+  currentPhotoIndex = (currentPhotoIndex + 1) % total;
+  showCurrentPhoto();
+});
+
+/* 键盘操作：Esc 关闭，左右方向键切换照片 */
+document.addEventListener("keydown", (event) => {
+  if (lightbox.hidden) return;
+
+  if (event.key === "Escape") {
+    closeLightbox();
+  } else if (event.key === "ArrowLeft") {
+    previousPhotoButton.click();
+  } else if (event.key === "ArrowRight") {
+    nextPhotoButton.click();
+  }
+});
+ </script>
+<!-- 旅行相册页面：默认隐藏 -->
+<section id="album-page" class="album-page" hidden>
+  <button id="back-to-albums" class="back-button" type="button">
+    ← 返回旅行足迹
+  </button>
+
+  <p class="album-eyebrow">MY TRAVEL DIARY</p>
+  <h2 id="album-title">旅行相册</h2>
+  <p id="album-description" class="album-description"></p>
+
+  <div id="album-grid" class="album-grid"></div>
+</section>
+
+<!-- 点击照片后显示的大图窗口 -->
+<div id="photo-lightbox" class="photo-lightbox" hidden>
+  <button
+    id="close-lightbox"
+    class="close-lightbox"
+    type="button"
+    aria-label="关闭大图"
+  >×</button>
+
+  <button
+    id="previous-photo"
+    class="photo-arrow"
+    type="button"
+    aria-label="上一张照片"
+  >‹</button>
+
+  <figure class="lightbox-figure">
+    <img id="lightbox-image" src="" alt="">
+    <figcaption id="lightbox-caption"></figcaption>
+  </figure>
+
+  <button
+    id="next-photo"
+    class="photo-arrow"
+    type="button"
+    aria-label="下一张照片"
+  >›</button>
+</div>
 </body>
 </html>
