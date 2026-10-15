@@ -826,15 +826,15 @@ document.querySelectorAll("#travel [data-album]").forEach((card) => {
 function openAlbum(albumId) {
   const album = travelAlbums[albumId];
 
-  if (!album) {
-    alert(
-      "找不到相册！\n" +
-      "收到的编号：" + albumId + "\n" +
-      "已有编号：" + Object.keys(travelAlbums).join(", ")
-    );
-    return;
-  }
-  
+
+if (!album) {
+  alert(
+    "收到的编号 = [" + String(albumId) + "]\n" +
+    "相册清单 = [" + Object.keys(travelAlbums).join(", ") + "]"
+  );
+  return;
+}
+ 
   currentAlbum = album;
   albumTitle.textContent = album.title;
   albumDescription.textContent = album.description;
