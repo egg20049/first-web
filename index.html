@@ -160,15 +160,16 @@
       box-shadow: 0 8px 28px #7d5a9910;
     }
 
-    .travel-art {
-      height: 125px;
-      display: grid;
-      place-items: center;
-      font-size: 48px;
+    
+    .travel-photo {
+      width: 100%;
+      height: 180px;
+      display: block;
+      object-fit: cover;
       border-radius: 16px;
-      background: linear-gradient(140deg, #ffe1ec, #e4ddff);
       margin-bottom: 14px;
     }
+
 
     .card h3 { margin: 8px 0; }
 
@@ -287,7 +288,7 @@
 
         <h1>Welcome to <span>my planet.</span></h1>
         <p class="subtitle">
-          Hi，陌生人！欢迎来到迷GO的宇宙。<br>
+          Hi，陌生人！欢迎来到我的宇宙。<br>
           一个正在探索世界、学习新技能的普通人。<br>
           Life is short. Stay curious. ✨
         </p>
@@ -314,32 +315,48 @@
 
       <section id="travel">
         <h2 class="section-title">✈️ 我的旅行星球</h2>
-        <p class="hint">世界那么大，想把走过的路都变成星星。</p>
+        <p class="hint">live free or die.</p>
 
         <div class="grid">
           <article class="card">
-            <div class="travel-art">🗼</div>
+           <img
+             class="travel-photo"
+             src="./images/Japan.jpg"
+             alt="东京旅行照片"
+           >
             <h3>Tokyo · 日本</h3>
             <p>霓虹灯、便利店和深夜的城市。在这里看了人生第一场演唱会。</p>
             <span class="pill">城市漫游</span>
           </article>
 
           <article class="card">
-            <div class="travel-art">🌴</div>
+            <img
+              class="travel-photo"
+              src="./images/Bangkok.jpg"
+              alt="泰国旅行照片"
+            >
             <h3>Bangkok · 泰国</h3>
             <p>阳光、海风与陌生的街道。记录人生第一场solotrip。</p>
             <span class="pill">自由探索</span>
           </article>
 
           <article class="card">
-            <div class="travel-art">🌃</div>
+          <img
+            class="travel-photo"
+            src="./images/Malaysia.jpg"
+            alt="马来西亚旅行照片"
+          > 
             <h3>Penang & Kuala Lumpur · 马来西亚</h3>
             <p>美食、阳光与繁华的街道。记录那些一个人出发的勇气。</p>
             <span class="pill">风一样自由</span>
           </article>   
           
           <article class="card">
-            <div class="travel-art">🌌</div>
+            <img
+              class="travel-photo"
+              src="./images/next.jpg"
+              alt="下一站旅行照片"
+            >
             <h3>Next Stop · 下一站</h3>
             <p>还有好多地方想去。下一颗旅行星星，由未来的你来点亮。</p>
             <span class="pill">To be continued</span>
