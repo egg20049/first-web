@@ -444,7 +444,7 @@
 
         <h1>Welcome to <span>my planet.</span></h1>
         <p class="subtitle">
-          Hi，陌生人！欢迎来到我的宇宙。<br>
+          Hi,陌生人！欢迎来到我的宇宙。<br>
           一个正在探索世界、学习新技能的普通人。<br>
           Life is short. Stay curious. ✨
         </p>
@@ -514,14 +514,14 @@
               alt="下一站旅行照片"
             >
             <h3>Next Stop · 下一站</h3>
-            <p>还有好多地方想去。下一颗旅行星星，由未来的你来点亮。</p>
+            <p>还有好多地方想去。下一颗旅行星星,由未来的你来点亮。</p>
             <span class="pill">To be continued</span>
           </article>
         </div>
 
         <div class="memory">
           <strong>📍 我的旅行宣言</strong><br>
-          跳出屏幕，看真实的世界。
+          跳出屏幕,看真实的世界。
         </div>
       </section>
 
@@ -529,8 +529,8 @@
         <h2 class="section-title">💌 留给未来的自己</h2>
         <div class="card">
           <p>
-            愿我一直有好奇心，有重新开始的勇气，
-            有爱自己的能力，也有去远方看看的自由。
+            愿我一直有好奇心,有重新开始的勇气,
+            有爱自己的能力,也有去远方看看的自由。
           </p>
           <p class="hint">这是你的小空间。以后可以慢慢换成自己的故事。</p>
         </div>
@@ -538,7 +538,7 @@
 
       <section id="chat">
         <h2 class="section-title">🤖 AI 小角落</h2>
-        <p class="hint">先体验一个本地演示版，之后再升级成真正的 AI。</p>
+        <p class="hint">先体验一个本地演示版,之后再升级成真正的 AI。</p>
 
         <div class="chat">
           <div id="messages" aria-live="polite">
@@ -554,8 +554,8 @@
           </form>
 
           <div class="note">
-            提醒：当前是本地演示，不是真正的 AI 模型。
-            你的输入只会触发预设回复，不会连接外部 AI 服务。
+            提醒：当前是本地演示,不是真正的 AI 模型。
+            你的输入只会触发预设回复,不会连接外部 AI 服务。
           </div>
         </div>
       </section>
@@ -610,7 +610,7 @@
 </div>
   
   <script>
-    // 彩蛋一：点击按钮，撒下一场星星雨
+    // 彩蛋一：点击按钮,撒下一场星星雨
     function sprinkle(event) {
       const emojis = ["✨", "💗", "🌸", "⭐", "🦋"];
 
@@ -693,7 +693,7 @@
       button.textContent = "♫ 停止音乐";
     }
 
-    // 彩蛋三：本地模拟聊天，还没有接入 AI API
+    // 彩蛋三：本地模拟聊天,还没有接入 AI API
     const form = document.getElementById("chatForm");
     const input = document.getElementById("question");
     const messages = document.getElementById("messages");
@@ -715,16 +715,16 @@
       addMessage(question, "me");
       input.value = "";
 
-      let answer = "收到你的消息啦！等我们接入真正的 AI，我就能认真回答你啦。✨";
+      let answer = "收到你的消息啦！等我们接入真正的 AI,我就能认真回答你啦。✨";
 
       if (question.includes("你好") || question.includes("嗨")) {
         answer = "你好呀！欢迎来到这个小小星球！🌷";
       } else if (question.includes("旅行")) {
-        answer = "出发吧！记得记录沿途的小惊喜，也照顾好自己。✈️";
+        answer = "出发吧！记得记录沿途的小惊喜,也照顾好自己。✈️";
       } else if (question.includes("开心")) {
         answer = "希望你今天也能遇见一点点值得开心的事情！💗";
       } else if (question.includes("名字")) {
-        answer = "我叫小星球助手，是这个网站里的演示机器人！⭐";
+        answer = "我叫小星球助手,是这个网站里的演示机器人！⭐";
       }
 
       setTimeout(() => addMessage(answer, "bot"), 350);
@@ -788,7 +788,7 @@ const travelAlbums = {
         caption: "泰国旅行 · 08"
       }
     ]
-  }，
+  },
 
   malaysia: {
     title: "马来西亚",
@@ -854,7 +854,7 @@ const nextPhotoButton = document.getElementById("next-photo");
 let currentAlbum = null;
 let currentPhotoIndex = 0;
 
-/* 3. 点击旅行卡片，打开对应相册 */
+/* 3. 点击旅行卡片,打开对应相册 */
 document.querySelectorAll("#travel [data-album]").forEach((card) => {
   card.style.cursor = "pointer";
 
@@ -896,7 +896,7 @@ if (!album) {
     albumGrid.appendChild(image);
   });
 
-  /* 隐藏首页中的旅行区域，显示相册 */
+  /* 隐藏首页中的旅行区域,显示相册 */
   document.getElementById("travel").hidden = true;
   albumPage.hidden = false;
   albumPage.scrollIntoView({ behavior: "smooth" });
@@ -963,7 +963,7 @@ nextPhotoButton.addEventListener("click", () => {
   showCurrentPhoto();
 });
 
-/* 键盘操作：Esc 关闭，左右方向键切换照片 */
+/* 键盘操作：Esc 关闭,左右方向键切换照片 */
 document.addEventListener("keydown", (event) => {
   if (lightbox.hidden) return;
 
