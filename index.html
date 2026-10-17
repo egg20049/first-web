@@ -640,10 +640,8 @@
     }
 
     // 彩蛋二：温柔的小旋律
-    let audioContext = null;
-    let musicTimer = null;
-    let noteIndex = 0;
-
+    let musicAudio = null;
+    
         // 隐藏彩蛋：连续点击音乐按钮解锁惊喜
     let secretClickCount = 0;
     let secretUnlocked = false;
@@ -662,15 +660,42 @@
       }
     }
 
-    function toggleMusic() {
-      const button = document.getElementById("musicBtn");
+   
+function toggleMusic() {
+  const button = document.getElementById("musicBtn");
+  const wish = document.getElementById("wish");
 
-      if (musicTimer) {
-        clearInterval(musicTimer);
-        musicTimer = null;
-        button.textContent = "♫ 播放小彩蛋";
-        return;
-      }
+  // 第一次点击时，加载真实歌曲
+  if (!musicAudio) {
+    musicAudio = new Audio("music/Passionfruit-Drake.mp3");
+    musicAudio.loop = true;
+
+    musicAudio.addEventListener("error", function () {
+      wish.textContent =
+        "音乐加载失败，请检查歌曲文件路径是否正确。";
+      button.textContent = "♫ 播放小彩蛋";
+    });
+  }
+
+  // 正在播放时，停止并回到开头
+  if (!musicAudio.paused) {
+    musicAudio.pause();
+    musicAudio.currentTime = 0;
+    button.textContent = "♫ 播放小彩蛋";
+    return;
+  }
+
+  // 开始播放真实歌曲
+  musicAudio.play()
+    .then(function () {
+      button.textContent = "♫ 停止音乐";
+    })
+    .catch(function () {
+      wish.textContent =
+        "歌曲暂时无法播放，请刷新页面后再试。";
+      button.textContent = "♫ 播放小彩蛋";
+    });
+}
 
       const AudioEngine =
         window.AudioContext || window.webkitAudioContext;
