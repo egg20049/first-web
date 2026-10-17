@@ -639,7 +639,7 @@
         wishes[Math.floor(Math.random() * wishes.length)];
     }
 
-    // 彩蛋二：使用浏览器生成简单的音乐音符
+    // 彩蛋二：温柔的小旋律
     let audioContext = null;
     let musicTimer = null;
     let noteIndex = 0;
@@ -654,7 +654,8 @@
         return;
       }
 
-      const AudioEngine = window.AudioContext || window.webkitAudioContext;
+      const AudioEngine =
+        window.AudioContext || window.webkitAudioContext;
 
       if (!AudioEngine) {
         document.getElementById("wish").textContent =
@@ -662,34 +663,50 @@
         return;
       }
 
-      if (!audioContext) audioContext = new AudioEngine();
+      if (!audioContext) {
+        audioContext = new AudioEngine();
+      }
 
       audioContext.resume();
-      const notes = [523.25, 659.25, 783.99, 659.25, 587.33, 698.46];
+
+      // 原创小旋律：音高由低到高，再温柔地落下来
+      const notes = [
+        523.25, 659.25, 783.99, 659.25,
+        587.33, 523.25, 440.00, 523.25,
+        587.33, 659.25, 587.33, 523.25,
+        493.88, 523.25, 659.25, 523.25
+      ];
 
       function playNote() {
         const oscillator = audioContext.createOscillator();
         const volume = audioContext.createGain();
+        const now = audioContext.currentTime;
 
         oscillator.type = "sine";
-        oscillator.frequency.value = notes[noteIndex % notes.length];
-        volume.gain.setValueAtTime(0.0001, audioContext.currentTime);
+        oscillator.frequency.setValueAtTime(
+          notes[noteIndex % notes.length], now
+        );
+
+        volume.gain.setValueAtTime(0.0001, now);
         volume.gain.exponentialRampToValueAtTime(
-          0.06, audioContext.currentTime + 0.03
+          0.045, now + 0.04
         );
         volume.gain.exponentialRampToValueAtTime(
-          0.0001, audioContext.currentTime + 0.3
+          0.0001, now + 0.30
         );
 
         oscillator.connect(volume);
         volume.connect(audioContext.destination);
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 0.32);
+
+        oscillator.start(now);
+        oscillator.stop(now + 0.32);
+
         noteIndex++;
       }
 
+      noteIndex = 0;
       playNote();
-      musicTimer = setInterval(playNote, 380);
+      musicTimer = setInterval(playNote, 360);
       button.textContent = "♫ 停止音乐";
     }
 
