@@ -459,7 +459,7 @@
           <button class="btn" onclick="sprinkle(event)">
             给我一点好运 ✨
           </button>
-          <button class="btn secondary" id="musicBtn" onclick="toggleMusic()">
+         <button class="btn secondary" id="musicBtn" onclick="toggleMusic(); checkSecretEasterEgg()">
             ♫ 播放小彩蛋
           </button>
         </div>
@@ -521,7 +521,7 @@
 
         <div class="memory">
           <strong>📍 我的旅行宣言</strong><br>
-          跳出屏幕,看真实的世界。
+          live free or die.🤞
         </div>
       </section>
 
@@ -643,6 +643,24 @@
     let audioContext = null;
     let musicTimer = null;
     let noteIndex = 0;
+
+        // 隐藏彩蛋：连续点击音乐按钮解锁惊喜
+    let secretClickCount = 0;
+    let secretUnlocked = false;
+
+    function checkSecretEasterEgg() {
+      if (secretUnlocked) return;
+
+      secretClickCount++;
+
+      if (secretClickCount >= 5) {
+        secretUnlocked = true;
+
+        const wish = document.getElementById("wish");
+        wish.textContent =
+          "✨ 恭喜你发现隐藏彩蛋！愿你一直被温柔和快乐包围。💖";
+      }
+    }
 
     function toggleMusic() {
       const button = document.getElementById("musicBtn");
