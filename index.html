@@ -697,62 +697,6 @@ function toggleMusic() {
     });
 }
 
-      const AudioEngine =
-        window.AudioContext || window.webkitAudioContext;
-
-      if (!AudioEngine) {
-        document.getElementById("wish").textContent =
-          "你的浏览器暂不支持这个音乐彩蛋。";
-        return;
-      }
-
-      if (!audioContext) {
-        audioContext = new AudioEngine();
-      }
-
-      audioContext.resume();
-
-      // 原创小旋律：音高由低到高，再温柔地落下来
-      const notes = [
-        523.25, 659.25, 783.99, 659.25,
-        587.33, 523.25, 440.00, 523.25,
-        587.33, 659.25, 587.33, 523.25,
-        493.88, 523.25, 659.25, 523.25
-      ];
-
-      function playNote() {
-        const oscillator = audioContext.createOscillator();
-        const volume = audioContext.createGain();
-        const now = audioContext.currentTime;
-
-        oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(
-          notes[noteIndex % notes.length], now
-        );
-
-        volume.gain.setValueAtTime(0.0001, now);
-        volume.gain.exponentialRampToValueAtTime(
-          0.045, now + 0.04
-        );
-        volume.gain.exponentialRampToValueAtTime(
-          0.0001, now + 0.30
-        );
-
-        oscillator.connect(volume);
-        volume.connect(audioContext.destination);
-
-        oscillator.start(now);
-        oscillator.stop(now + 0.32);
-
-        noteIndex++;
-      }
-
-      noteIndex = 0;
-      playNote();
-      musicTimer = setInterval(playNote, 360);
-      button.textContent = "♫ 停止音乐";
-    }
-
     // 彩蛋三：本地模拟聊天,还没有接入 AI API
     const form = document.getElementById("chatForm");
     const input = document.getElementById("question");
